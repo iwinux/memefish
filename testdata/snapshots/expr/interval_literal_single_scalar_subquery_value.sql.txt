@@ -1,0 +1,27 @@
+--- interval_literal_single_scalar_subquery_value.sql
+INTERVAL (SELECT 30) DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 24,
+  Value:           &ast.ScalarSubQuery{
+    Lparen: 9,
+    Rparen: 19,
+    Query:  &ast.Select{
+      Select:  10,
+      Results: []ast.SelectItem{
+        &ast.ExprSelectItem{
+          Expr: &ast.IntLiteral{
+            ValuePos: 17,
+            ValueEnd: 19,
+            Base:     10,
+            Value:    "30",
+          },
+        },
+      },
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL (SELECT 30) DAY

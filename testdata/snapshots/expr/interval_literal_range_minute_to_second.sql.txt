@@ -1,0 +1,16 @@
+--- interval_literal_range_minute_to_second.sql
+INTERVAL '15:14' MINUTE TO SECOND
+--- AST
+&ast.IntervalLiteralRange{
+  EndingDateTimePartEnd: 33,
+  Value:                 &ast.StringLiteral{
+    ValuePos: 9,
+    ValueEnd: 16,
+    Value:    "15:14",
+  },
+  StartingDateTimePart: "MINUTE",
+  EndingDateTimePart:   "SECOND",
+}
+
+--- SQL
+INTERVAL "15:14" MINUTE TO SECOND

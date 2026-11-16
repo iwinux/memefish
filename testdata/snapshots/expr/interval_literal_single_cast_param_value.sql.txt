@@ -1,0 +1,22 @@
+--- interval_literal_single_cast_param_value.sql
+INTERVAL CAST(@n AS INT64) DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 30,
+  Value:           &ast.CastExpr{
+    Cast:   9,
+    Rparen: 25,
+    Expr:   &ast.Param{
+      Atmark: 14,
+      Name:   "n",
+    },
+    Type: &ast.SimpleType{
+      NamePos: 20,
+      Name:    "INT64",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL CAST(@n AS INT64) DAY

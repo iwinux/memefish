@@ -1,0 +1,1 @@
+INTERVAL 7 * 4 DAY

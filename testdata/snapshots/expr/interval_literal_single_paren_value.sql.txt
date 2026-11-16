@@ -1,0 +1,19 @@
+--- interval_literal_single_paren_value.sql
+INTERVAL (total_logins) DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 27,
+  Value:           &ast.ParenExpr{
+    Lparen: 9,
+    Rparen: 22,
+    Expr:   &ast.Ident{
+      NamePos: 10,
+      NameEnd: 22,
+      Name:    "total_logins",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL (total_logins) DAY

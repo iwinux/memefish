@@ -1,0 +1,1 @@
+INTERVAL CAST(total_logins AS INT64) DAY

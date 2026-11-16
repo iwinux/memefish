@@ -1,0 +1,24 @@
+--- interval_literal_single_expr_value.sql
+INTERVAL total_logins * 7 DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 29,
+  Value:           &ast.BinaryExpr{
+    Op:   "*",
+    Left: &ast.Ident{
+      NamePos: 9,
+      NameEnd: 21,
+      Name:    "total_logins",
+    },
+    Right: &ast.IntLiteral{
+      ValuePos: 24,
+      ValueEnd: 25,
+      Base:     10,
+      Value:    "7",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL total_logins * 7 DAY

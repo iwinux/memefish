@@ -1,0 +1,24 @@
+--- interval_literal_single_low_precedence_value.sql
+INTERVAL a + 1 DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 18,
+  Value:           &ast.BinaryExpr{
+    Op:   "+",
+    Left: &ast.Ident{
+      NamePos: 9,
+      NameEnd: 10,
+      Name:    "a",
+    },
+    Right: &ast.IntLiteral{
+      ValuePos: 13,
+      ValueEnd: 14,
+      Base:     10,
+      Value:    "1",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL a + 1 DAY

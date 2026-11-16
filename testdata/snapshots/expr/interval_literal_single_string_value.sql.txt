@@ -1,0 +1,15 @@
+--- interval_literal_single_string_value.sql
+INTERVAL '3' DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 16,
+  Value:           &ast.StringLiteral{
+    ValuePos: 9,
+    ValueEnd: 12,
+    Value:    "3",
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL "3" DAY

@@ -1,0 +1,1 @@
+INTERVAL (total_logins) DAY

@@ -1,0 +1,461 @@
+--- select_interval_values_with_int64_expr.sql
+SELECT
+  -- The value of an interval literal is any INT64 expression.
+  TIMESTAMP_SUB(ts, INTERVAL 30 DAY),
+  TIMESTAMP_SUB(ts, INTERVAL -30 DAY),
+  TIMESTAMP_SUB(ts, INTERVAL @n DAY),
+  TIMESTAMP_SUB(ts, INTERVAL total_logins DAY),
+  TIMESTAMP_SUB(ts, INTERVAL (total_logins) DAY),
+  TIMESTAMP_SUB(ts, INTERVAL total_logins * 7 DAY),
+  TIMESTAMP_SUB(ts, INTERVAL 7 * 4 DAY),
+  TIMESTAMP_SUB(ts, INTERVAL CAST(total_logins AS INT64) DAY),
+  TIMESTAMP_SUB(ts, INTERVAL CAST(@n AS INT64) DAY),
+  TIMESTAMP_SUB(ts, INTERVAL (SELECT 30) DAY),
+  TIMESTAMP_SUB(ts, INTERVAL '3' DAY),
+
+--- AST
+&ast.QueryStatement{
+  Query: &ast.Select{
+    Results: []ast.SelectItem{
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 105,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 72,
+                NameEnd: 85,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 86,
+                NameEnd: 88,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        90,
+                DateTimePartEnd: 105,
+                Value:           &ast.IntLiteral{
+                  ValuePos: 99,
+                  ValueEnd: 101,
+                  Base:     10,
+                  Value:    "30",
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 144,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 110,
+                NameEnd: 123,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 124,
+                NameEnd: 126,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        128,
+                DateTimePartEnd: 144,
+                Value:           &ast.IntLiteral{
+                  ValuePos: 137,
+                  ValueEnd: 140,
+                  Base:     10,
+                  Value:    "-30",
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 182,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 149,
+                NameEnd: 162,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 163,
+                NameEnd: 165,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        167,
+                DateTimePartEnd: 182,
+                Value:           &ast.Param{
+                  Atmark: 176,
+                  Name:   "n",
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 230,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 187,
+                NameEnd: 200,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 201,
+                NameEnd: 203,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        205,
+                DateTimePartEnd: 230,
+                Value:           &ast.Ident{
+                  NamePos: 214,
+                  NameEnd: 226,
+                  Name:    "total_logins",
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 280,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 235,
+                NameEnd: 248,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 249,
+                NameEnd: 251,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        253,
+                DateTimePartEnd: 280,
+                Value:           &ast.ParenExpr{
+                  Lparen: 262,
+                  Rparen: 275,
+                  Expr:   &ast.Ident{
+                    NamePos: 263,
+                    NameEnd: 275,
+                    Name:    "total_logins",
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 332,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 285,
+                NameEnd: 298,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 299,
+                NameEnd: 301,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        303,
+                DateTimePartEnd: 332,
+                Value:           &ast.BinaryExpr{
+                  Op:   "*",
+                  Left: &ast.Ident{
+                    NamePos: 312,
+                    NameEnd: 324,
+                    Name:    "total_logins",
+                  },
+                  Right: &ast.IntLiteral{
+                    ValuePos: 327,
+                    ValueEnd: 328,
+                    Base:     10,
+                    Value:    "7",
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 373,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 337,
+                NameEnd: 350,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 351,
+                NameEnd: 353,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        355,
+                DateTimePartEnd: 373,
+                Value:           &ast.BinaryExpr{
+                  Op:   "*",
+                  Left: &ast.IntLiteral{
+                    ValuePos: 364,
+                    ValueEnd: 365,
+                    Base:     10,
+                    Value:    "7",
+                  },
+                  Right: &ast.IntLiteral{
+                    ValuePos: 368,
+                    ValueEnd: 369,
+                    Base:     10,
+                    Value:    "4",
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 436,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 378,
+                NameEnd: 391,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 392,
+                NameEnd: 394,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        396,
+                DateTimePartEnd: 436,
+                Value:           &ast.CastExpr{
+                  Cast:   405,
+                  Rparen: 431,
+                  Expr:   &ast.Ident{
+                    NamePos: 410,
+                    NameEnd: 422,
+                    Name:    "total_logins",
+                  },
+                  Type: &ast.SimpleType{
+                    NamePos: 426,
+                    Name:    "INT64",
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 489,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 441,
+                NameEnd: 454,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 455,
+                NameEnd: 457,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        459,
+                DateTimePartEnd: 489,
+                Value:           &ast.CastExpr{
+                  Cast:   468,
+                  Rparen: 484,
+                  Expr:   &ast.Param{
+                    Atmark: 473,
+                    Name:   "n",
+                  },
+                  Type: &ast.SimpleType{
+                    NamePos: 479,
+                    Name:    "INT64",
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 536,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 494,
+                NameEnd: 507,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 508,
+                NameEnd: 510,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        512,
+                DateTimePartEnd: 536,
+                Value:           &ast.ScalarSubQuery{
+                  Lparen: 521,
+                  Rparen: 531,
+                  Query:  &ast.Select{
+                    Select:  522,
+                    Results: []ast.SelectItem{
+                      &ast.ExprSelectItem{
+                        Expr: &ast.IntLiteral{
+                          ValuePos: 529,
+                          ValueEnd: 531,
+                          Base:     10,
+                          Value:    "30",
+                        },
+                      },
+                    },
+                  },
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+      &ast.ExprSelectItem{
+        Expr: &ast.CallExpr{
+          Rparen: 575,
+          Func:   &ast.Path{
+            Idents: []*ast.Ident{
+              &ast.Ident{
+                NamePos: 541,
+                NameEnd: 554,
+                Name:    "TIMESTAMP_SUB",
+              },
+            },
+          },
+          Args: []ast.Arg{
+            &ast.ExprArg{
+              Expr: &ast.Ident{
+                NamePos: 555,
+                NameEnd: 557,
+                Name:    "ts",
+              },
+            },
+            &ast.ExprArg{
+              Expr: &ast.IntervalLiteralSingle{
+                Interval:        559,
+                DateTimePartEnd: 575,
+                Value:           &ast.StringLiteral{
+                  ValuePos: 568,
+                  ValueEnd: 571,
+                  Value:    "3",
+                },
+                DateTimePart: "DAY",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+
+--- SQL
+SELECT TIMESTAMP_SUB(ts, INTERVAL 30 DAY), TIMESTAMP_SUB(ts, INTERVAL -30 DAY), TIMESTAMP_SUB(ts, INTERVAL @n DAY), TIMESTAMP_SUB(ts, INTERVAL total_logins DAY), TIMESTAMP_SUB(ts, INTERVAL (total_logins) DAY), TIMESTAMP_SUB(ts, INTERVAL total_logins * 7 DAY), TIMESTAMP_SUB(ts, INTERVAL 7 * 4 DAY), TIMESTAMP_SUB(ts, INTERVAL CAST(total_logins AS INT64) DAY), TIMESTAMP_SUB(ts, INTERVAL CAST(@n AS INT64) DAY), TIMESTAMP_SUB(ts, INTERVAL (SELECT 30) DAY), TIMESTAMP_SUB(ts, INTERVAL "3" DAY)

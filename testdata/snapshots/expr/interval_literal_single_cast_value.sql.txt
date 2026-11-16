@@ -1,0 +1,23 @@
+--- interval_literal_single_cast_value.sql
+INTERVAL CAST(total_logins AS INT64) DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 40,
+  Value:           &ast.CastExpr{
+    Cast:   9,
+    Rparen: 35,
+    Expr:   &ast.Ident{
+      NamePos: 14,
+      NameEnd: 26,
+      Name:    "total_logins",
+    },
+    Type: &ast.SimpleType{
+      NamePos: 30,
+      Name:    "INT64",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL CAST(total_logins AS INT64) DAY

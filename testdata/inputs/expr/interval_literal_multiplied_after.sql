@@ -1,0 +1,1 @@
+ts - n * INTERVAL 1 DAY

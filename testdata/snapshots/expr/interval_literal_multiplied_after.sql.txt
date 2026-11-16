@@ -1,0 +1,32 @@
+--- interval_literal_multiplied_after.sql
+ts - n * INTERVAL 1 DAY
+--- AST
+&ast.BinaryExpr{
+  Op:   "-",
+  Left: &ast.Ident{
+    NameEnd: 2,
+    Name:    "ts",
+  },
+  Right: &ast.BinaryExpr{
+    Op:   "*",
+    Left: &ast.Ident{
+      NamePos: 5,
+      NameEnd: 6,
+      Name:    "n",
+    },
+    Right: &ast.IntervalLiteralSingle{
+      Interval:        9,
+      DateTimePartEnd: 23,
+      Value:           &ast.IntLiteral{
+        ValuePos: 18,
+        ValueEnd: 19,
+        Base:     10,
+        Value:    "1",
+      },
+      DateTimePart: "DAY",
+    },
+  },
+}
+
+--- SQL
+ts - n * INTERVAL 1 DAY

@@ -1,0 +1,16 @@
+--- interval_literal_range_year_to_month.sql
+INTERVAL '1-2' YEAR TO MONTH
+--- AST
+&ast.IntervalLiteralRange{
+  EndingDateTimePartEnd: 28,
+  Value:                 &ast.StringLiteral{
+    ValuePos: 9,
+    ValueEnd: 14,
+    Value:    "1-2",
+  },
+  StartingDateTimePart: "YEAR",
+  EndingDateTimePart:   "MONTH",
+}
+
+--- SQL
+INTERVAL "1-2" YEAR TO MONTH

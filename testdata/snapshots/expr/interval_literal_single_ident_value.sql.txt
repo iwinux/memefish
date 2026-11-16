@@ -1,0 +1,15 @@
+--- interval_literal_single_ident_value.sql
+INTERVAL total_logins DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 25,
+  Value:           &ast.Ident{
+    NamePos: 9,
+    NameEnd: 21,
+    Name:    "total_logins",
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL total_logins DAY

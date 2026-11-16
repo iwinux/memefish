@@ -1,0 +1,25 @@
+--- interval_literal_single_int_expr_value.sql
+INTERVAL 7 * 4 DAY
+--- AST
+&ast.IntervalLiteralSingle{
+  DateTimePartEnd: 18,
+  Value:           &ast.BinaryExpr{
+    Op:   "*",
+    Left: &ast.IntLiteral{
+      ValuePos: 9,
+      ValueEnd: 10,
+      Base:     10,
+      Value:    "7",
+    },
+    Right: &ast.IntLiteral{
+      ValuePos: 13,
+      ValueEnd: 14,
+      Base:     10,
+      Value:    "4",
+    },
+  },
+  DateTimePart: "DAY",
+}
+
+--- SQL
+INTERVAL 7 * 4 DAY

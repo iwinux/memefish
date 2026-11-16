@@ -2286,7 +2286,7 @@ type JSONLiteral struct {
 
 // IntervalLiteralSingle represents an interval literal with a single datetime part.
 //
-//	INTERVAL {{.Value}} {{.DateTimePart | sql}}
+//	INTERVAL {{.Value | sql}} {{.DateTimePart | sql}}
 type IntervalLiteralSingle struct {
 	// pos = Interval
 	// end = DateTimePartEnd
@@ -2294,7 +2294,7 @@ type IntervalLiteralSingle struct {
 	Interval        token.Pos // position of "INTERVAL" keyword
 	DateTimePartEnd token.Pos
 
-	Value IntValue
+	Value Expr // any INT64 expression; a string literal with a TO makes an IntervalLiteralRange
 
 	DateTimePart DateTimePart
 }

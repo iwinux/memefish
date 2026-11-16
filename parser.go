@@ -2949,34 +2949,32 @@ func (p *Parser) parseDateTimePart() (part ast.DateTimePart, pos, end token.Pos)
 
 func (p *Parser) parseIntervalLiteral() ast.Expr {
 	interval := p.expect("INTERVAL").Pos
+
+	// The value is any INT64 expression. A string literal value is either a
+	// datetime parts string (`'1-2' YEAR TO MONTH`) or a single part value
+	// (`'3' DAY`), so the following datetime part and TO token decide.
 	expr := p.parseExpr()
 
-	// string parameter is not supported, so ast.Param will be caught as ast.IntValue.
-	switch e := expr.(type) {
-	case ast.IntValue:
-		unit, _, end := p.parseDateTimePart()
+	unit, _, end := p.parseDateTimePart()
 
-		return &ast.IntervalLiteralSingle{
-			Interval:        interval,
-			Value:           e,
-			DateTimePart:    unit,
-			DateTimePartEnd: end,
-		}
-	case *ast.StringLiteral:
-		starting, _, _ := p.parseDateTimePart()
-
-		p.expect("TO")
+	if value, ok := expr.(*ast.StringLiteral); ok && p.Token.Kind == "TO" {
+		p.nextToken()
 		ending, _, endingEnd := p.parseDateTimePart()
 
 		return &ast.IntervalLiteralRange{
 			Interval:              interval,
-			Value:                 e,
-			StartingDateTimePart:  starting,
+			Value:                 value,
+			StartingDateTimePart:  unit,
 			EndingDateTimePart:    ending,
 			EndingDateTimePartEnd: endingEnd,
 		}
-	default:
-		panic(p.errorfAtToken(&p.Token, `expect int64_expression or datetime_parts_string, but: %v`, p.Token.Kind))
+	}
+
+	return &ast.IntervalLiteralSingle{
+		Interval:        interval,
+		Value:           expr,
+		DateTimePart:    unit,
+		DateTimePartEnd: end,
 	}
 }
 
